@@ -73,9 +73,6 @@ void loop() {
           lcd.print("to begin!");
           messageNumber = 0;
         } 
-        // else if (messageNumber > 5) {
-        //   messageNumber = 1;
-        // } 
         else {
           lcd.clear();
           switch (messageNumber) {
