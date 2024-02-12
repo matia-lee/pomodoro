@@ -46,6 +46,8 @@ void setup()
   lcd.print("Welcome! ");
   lcd.setCursor(0, 1);
   lcd.print("Click to start->");
+
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -59,6 +61,10 @@ void loop() {
     if (reading != buttonState) {
       buttonState = reading;
       if (buttonState == HIGH) {
+        Serial.print("Setting button click: ");
+        Serial.println(buttonState);
+        Serial.print("Setting: ");
+        Serial.println(messageNumber);
         messageNumber++;
         if (messageNumber > 4) {
           lcd.clear();
@@ -103,6 +109,8 @@ void loop() {
   }
 
   if (digitalRead(startButton) == HIGH) {
+    Serial.print("Start button click: ");
+    Serial.println(startButton);
     startTimer();
   }
 }
@@ -114,6 +122,12 @@ void displayMessage() {
   switch (messageNumber) {
     case 1:
       study_minutes = study_minutes + delta;
+      Serial.print("New position: ");
+      Serial.println(newPosition);
+      Serial.print("Old position: ");
+      Serial.println(oldPosition);
+      Serial.print("Delta: ");
+      Serial.println(delta);
       if (study_minutes < 0) study_minutes = 0;
       Serial.print("Study time initialized to: ");
       Serial.print(study_minutes);
@@ -121,15 +135,42 @@ void displayMessage() {
       break;
     case 2:
       short_break_minutes = short_break_minutes + delta;
+      Serial.print("New position: ");
+      Serial.println(newPosition);
+      Serial.print("Old position: ");
+      Serial.println(oldPosition);
+      Serial.print("Delta: ");
+      Serial.println(delta);
       if (short_break_minutes < 0) short_break_minutes = 0;
+      Serial.print("Short break time initialized to: ");
+      Serial.print(short_break_minutes);
+      Serial.println(" minutes");
       break;
     case 3:
       long_break_minutes = long_break_minutes + delta;
+      Serial.print("New position: ");
+      Serial.println(newPosition);
+      Serial.print("Old position: ");
+      Serial.println(oldPosition);
+      Serial.print("Delta: ");
+      Serial.println(delta);
       if (long_break_minutes < 0) long_break_minutes = 0;
+      Serial.print("Long break time initialized to: ");
+      Serial.print(long_break_minutes);
+      Serial.println(" minutes");
       break;
     case 4:
       repeats = repeats + delta;
+      Serial.print("New position: ");
+      Serial.println(newPosition);
+      Serial.print("Old position: ");
+      Serial.println(oldPosition);
+      Serial.print("Delta: ");
+      Serial.println(delta);
       if (repeats < 0) repeats = 0;
+      Serial.print("Repeats initialized to: ");
+      Serial.print(repeats);
+      Serial.println(" repeats");
       break;
   }
 
@@ -173,6 +214,8 @@ void startTimer () {
     seconds = 60;
     minutes = study_minutes;
     minutes--;
+  Serial.print("Study minutes: ");
+  Serial.println(minutes);
     while(minutes >= 0){
       delay(1000);
       seconds = 59;
@@ -188,8 +231,12 @@ void startTimer () {
         }
         lcd.print(seconds);
         delay(1000);
+        Serial.print("Study seconds: ");
+        Serial.println(seconds);
         seconds--;
       }
+      Serial.print("Study minutes: ");
+      Serial.println(minutes);
       minutes--;
     }
     
@@ -211,8 +258,9 @@ void startTimer () {
     seconds = 60;
     minutes = break_duration;
     minutes--;
-
-    while(break_duration >= 0) {
+    Serial.print("Long/Short Break minutes: ");
+    Serial.println(minutes);
+    while(minutes >= 0) {
       delay(1000);
       seconds = 59;
       while(seconds > 0){
@@ -227,8 +275,12 @@ void startTimer () {
         }
         lcd.print(seconds);
         delay(1000);
+        Serial.print("Long/Short Break seconds: ");
+        Serial.println(seconds);
         seconds--;
       }
+      Serial.print("Long/Short Break minutes: ");
+      Serial.println(minutes);
       minutes--;
     }
     count++;  
