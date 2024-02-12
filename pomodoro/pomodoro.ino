@@ -63,15 +63,20 @@ void loop() {
       if (buttonState == HIGH) {
         Serial.print("Setting button click: ");
         Serial.println(buttonState);
+        messageNumber++;
         Serial.print("Setting: ");
         Serial.println(messageNumber);
-        messageNumber++;
-        if (messageNumber > 4) {
+        if (messageNumber == 5) {
           lcd.clear();
           lcd.print("<- Click left");
           lcd.setCursor(0, 1);
           lcd.print("to begin!");
-        } else {
+          messageNumber = 0;
+        } 
+        // else if (messageNumber > 5) {
+        //   messageNumber = 1;
+        // } 
+        else {
           lcd.clear();
           switch (messageNumber) {
             case 1:
