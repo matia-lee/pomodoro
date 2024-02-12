@@ -90,8 +90,9 @@ void loop() {
               lcd.print(long_break_minutes);
               break;
             case 4:
-              lcd.print("# of repeats: ");
+              lcd.print("# of study");
               lcd.setCursor(0, 1);
+              lcd.print("sessions: ");
               lcd.print(repeats);
               break;
           }
@@ -168,7 +169,7 @@ void displayMessage() {
       Serial.print("Delta: ");
       Serial.println(delta);
       if (repeats < 0) repeats = 0;
-      Serial.print("Repeats initialized to: ");
+      Serial.print("Study sessions initialized to: ");
       Serial.print(repeats);
       Serial.println(" repeats");
       break;
@@ -192,8 +193,9 @@ void displayMessage() {
       lcd.print(long_break_minutes);
       break;
     case 4:
-      lcd.print("# of repeats: ");
+      lcd.print("# of study");
       lcd.setCursor(0, 1);
+      lcd.print("sessions: ");
       lcd.print(repeats);
       break;
   }
@@ -203,7 +205,8 @@ void displayMessage() {
 
 void startTimer () {
   count = 0; 
-
+  Serial.print("Timer count: ");
+  Serial.println(count);
   while(count<repeats){ 
     lcd.clear();
     lcd.print("Study time!");
@@ -214,8 +217,8 @@ void startTimer () {
     seconds = 60;
     minutes = study_minutes;
     minutes--;
-  Serial.print("Study minutes: ");
-  Serial.println(minutes);
+    Serial.print("Study minutes: ");
+    Serial.println(minutes);
     while(minutes >= 0){
       delay(1000);
       seconds = 59;
@@ -245,13 +248,15 @@ void startTimer () {
     digitalWrite(ledGreen,HIGH);
     digitalWrite(ledRed,LOW);
     
-    if(count==(repeats-1)){
-      break_duration = long_break_minutes;
-      lcd.print("Long break!");
-    }
-    else{ 
-      break_duration = short_break_minutes;
-      lcd.print("Short break!");
+    if (repeats != 1) {
+      if(count==(repeats-1)){
+        break_duration = long_break_minutes;
+        lcd.print("Long break!");
+      }
+      else{ 
+        break_duration = short_break_minutes;
+        lcd.print("Short break!");
+      }
     }
 
     lcd.setCursor(0, 1);
@@ -283,6 +288,14 @@ void startTimer () {
       Serial.println(minutes);
       minutes--;
     }
-    count++;  
+    count++;
+    Serial.print("Timer count: ");
+    Serial.println(count);  
   }
+  digitalWrite(ledGreen, LOW);
+  digitalWrite(ledRed, LOW);
+  lcd.clear();
+  lcd.print("Study session");
+  lcd.setCursor(0, 1);
+  lcd.print("finished!");
 }
